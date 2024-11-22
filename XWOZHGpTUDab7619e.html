@@ -1,0 +1,725 @@
+<html><head><base href="." /><title>LEGO Builder Community & Sets!</title><style>
+:root {
+  --lego-yellow: #FFD700;
+  --lego-red: #FF0000;
+  --brick-shadow: rgba(0,0,0,0.2);
+  --gradient-white: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #f8f8f8 0%, #e8e8e8 100%);
+  min-height: 100vh;
+}
+
+.navbar {
+  background: linear-gradient(90deg, var(--lego-yellow) 0%, #FFE44D 100%);
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px var(--brick-shadow);
+}
+
+.navbar h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+  background: linear-gradient(45deg, #000 0%, #333 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.build-area {
+  width: 85%;
+  margin: 3rem auto;
+  min-height: 500px;
+  background: var(--gradient-white);
+  border-radius: 20px;
+  padding: 30px;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  border: 1px solid rgba(255,255,255,0.8);
+}
+
+.brick {
+  width: 60px;
+  height: 30px;
+  background: var(--lego-red);
+  border-radius: 3px;
+  margin: 5px;
+  cursor: pointer;
+  position: absolute;
+  transition: transform 0.3s, box-shadow 0.3s;
+  user-select: none;
+  box-shadow: 0 3px 6px var(--brick-shadow);
+}
+
+.brick:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px var(--brick-shadow);
+}
+
+.build-button {
+  background: linear-gradient(45deg, var(--lego-yellow) 0%, #FFE44D 100%);
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  font-weight: bold;
+  color: #333;
+}
+
+.build-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+.build-button:active {
+  transform: translateY(1px);
+}
+
+.color-picker {
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+
+.color-picker:hover {
+  transform: scale(1.05);
+}
+
+.sets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+  padding: 30px;
+  margin: 0 auto;
+  max-width: 1400px;
+}
+
+.set-card {
+  background: var(--gradient-white);
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.8);
+}
+
+.set-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+}
+
+.set-card h3 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  color: #333;
+  border-bottom: 3px solid var(--lego-yellow);
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.set-card p {
+  color: #666;
+  margin: 8px 0;
+  font-size: 1.1rem;
+}
+
+.toolbar {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+  padding: 15px;
+  background: rgba(255,255,255,0.5);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+.save-set {
+  margin-left: auto;
+  background: linear-gradient(45deg, #4CAF50 0%, #45a049 100%);
+}
+
+/* Added styles for comments and rating */
+.comments-section {
+  margin-top: 15px;
+  padding: 15px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 10px;
+}
+
+.comment {
+  background: var(--gradient-white);
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.8);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.comment-form {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.comment-input {
+  flex: 1;
+  padding: 10px;
+  border: 2px solid var(--lego-yellow);
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.likes-container {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.like-button, .dislike-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+}
+
+.like-button:hover {
+  background: rgba(76, 175, 80, 0.1);
+}
+
+.dislike-button:hover {
+  background: rgba(244, 67, 54, 0.1);
+}
+
+.like-count {
+  font-weight: bold;
+  color: #4CAF50;
+}
+
+.dislike-count {
+  font-weight: bold;
+  color: #F44336;
+}
+
+.comment-author {
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.comment-date {
+  font-size: 0.9rem;
+  color: #666;
+  margin-left: 10px;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</head><body>
+<div class="navbar">
+  <h1>LEGO Builder Community</h1>
+</div>
+
+<div class="build-area" id="buildArea">
+  <div class="toolbar">
+    <button class="build-button" onclick="startBuilding()">Start Building!</button>
+    <input type="color" class="color-picker" id="brickColor" value="#FF0000">
+    <button class="build-button save-set" onclick="saveSet()">Save My Set</button>
+  </div>
+  <div id="brickContainer"></div>
+</div>
+
+<div class="sets-grid" id="setsGrid">
+</div>
+
+<script>
+let sets = [
+  { 
+    name: "Space Station", 
+    pieces: 45, 
+    creator: "BrickMaster99", 
+    bricks: [
+      {x: 100, y: 100, color: "#FF0000"},
+      {x: 170, y: 100, color: "#FF0000"},
+      {x: 135, y: 140, color: "#0000FF"}
+    ],
+    likes: 0,
+    dislikes: 0,
+    comments: []
+  },
+  { 
+    name: "Pirate Ship", 
+    pieces: 89, 
+    creator: "LegoLover123", 
+    bricks: [
+      {x: 50, y: 200, color: "#8B4513"},
+      {x: 120, y: 200, color: "#8B4513"},
+      {x: 85, y: 160, color: "#FFFFFF"}
+    ],
+    likes: 0,
+    dislikes: 0,
+    comments: []
+  },
+  { 
+    name: "Castle Kingdom", 
+    pieces: 120, 
+    creator: "BuilderPro", 
+    bricks: [
+      {x: 150, y: 150, color: "#808080"},
+      {x: 220, y: 150, color: "#808080"},
+      {x: 185, y: 110, color: "#C0C0C0"}
+    ],
+    likes: 0,
+    dislikes: 0,
+    comments: []
+  }
+];
+
+function createPreviewImage(set) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 200;
+  canvas.height = 200;
+  const ctx = canvas.getContext('2d');
+  
+  // Draw white background
+  ctx.fillStyle = 'white';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  // Draw bricks
+  set.bricks.forEach(brick => {
+    ctx.fillStyle = brick.color;
+    ctx.fillRect(brick.x / 2, brick.y / 2, 30, 15);
+    
+    // Draw brick studs
+    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+    ctx.beginPath();
+    ctx.arc(brick.x / 2 + 10, brick.y / 2 + 7, 3, 0, Math.PI * 2);
+    ctx.arc(brick.x / 2 + 20, brick.y / 2 + 7, 3, 0, Math.PI * 2);
+    ctx.arc(brick.x / 2 + 30, brick.y / 2 + 7, 3, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  
+  return canvas.toDataURL();
+}
+
+async function generateInstructions(set) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  
+  // Add a more elaborate header with gradient-like effect
+  doc.setFillColor(255, 215, 0); // LEGO yellow
+  doc.rect(0, 0, doc.internal.pageSize.width, 40, 'F');
+  // Add decorative stripes
+  doc.setFillColor(255, 230, 100);
+  for(let i = 0; i < 8; i++) {
+    doc.rect(0, i * 5, doc.internal.pageSize.width, 2, 'F');
+  }
+  
+  // Add title with shadow effect
+  doc.setTextColor(51, 51, 51);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(28);
+  doc.text(`${set.name}`, 20, 25);
+  // Add shadow effect by slightly offsetting darker text
+  doc.setTextColor(150, 150, 150);
+  doc.text(`${set.name}`, 20.5, 25.5);
+  
+  // Add stylized subtitle with custom background
+  doc.setFillColor(255, 230, 100);
+  doc.roundedRect(20, 32, 100, 12, 3, 3, 'F');
+  doc.setFont("helvetica", "italic");
+  doc.setFontSize(14);
+  doc.setTextColor(51, 51, 51);
+  doc.text("Official Building Instructions", 25, 40);
+  
+  // Add creator info in a more stylized box
+  doc.setFillColor(255, 250, 240);
+  doc.roundedRect(20, 50, 170, 30, 5, 5, 'F');
+  doc.setDrawColor(255, 215, 0);
+  doc.setLineWidth(0.5);
+  doc.roundedRect(20, 50, 170, 30, 5, 5, 'S');
+  
+  // Add icons before text
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(12);
+  doc.setTextColor(51, 51, 51);
+  
+  // Creator icon (simple brick symbol)
+  doc.setFillColor(255, 215, 0);
+  doc.rect(25, 55, 8, 4, 'F');
+  doc.rect(27, 54, 4, 1, 'F');
+  doc.text(`Created by: ${set.creator}`, 40, 60);
+  
+  // Pieces icon (circle)
+  doc.circle(29, 70, 3, 'F');
+  doc.text(`Total pieces: ${set.pieces}`, 40, 72);
+  
+  // Add preview image with enhanced border and shadow
+  const previewImage = createPreviewImage(set);
+  // Draw shadow (moved up)
+  doc.setFillColor(230, 230, 230);
+  doc.roundedRect(23, 83, 100, 100, 5, 5, 'F');
+  // Draw border (moved up)
+  doc.setFillColor(255, 255, 255);
+  doc.roundedRect(20, 80, 100, 100, 5, 5, 'F');
+  // Image position adjusted to be fully within border
+  doc.addImage(previewImage, 'PNG', 20, 80, 100, 100);
+  doc.setDrawColor(255, 215, 0);
+  doc.setLineWidth(1);
+  doc.roundedRect(20, 80, 100, 100, 5, 5, 'S');
+  
+  // Add decorative corner elements
+  function drawCornerDecoration(x, y, rotation) {
+    doc.setFillColor(255, 215, 0);
+    doc.circle(x, y, 3, 'F');
+    doc.setLineWidth(0.5);
+    for(let i = 0; i < 3; i++) {
+      doc.line(x + (i*4*Math.cos(rotation)), y + (i*4*Math.sin(rotation)), 
+               x + ((i+1)*4*Math.cos(rotation)), y + ((i+1)*4*Math.sin(rotation)));
+    }
+  }
+  
+  drawCornerDecoration(190, 10, Math.PI * 1.75);
+  drawCornerDecoration(190, 287, Math.PI * 1.25);
+  drawCornerDecoration(20, 287, Math.PI * 0.75);
+  drawCornerDecoration(20, 10, Math.PI * 0.25);
+  
+  // Building steps section with enhanced styling
+  doc.setFillColor(255, 215, 0);
+  doc.rect(0, 195, doc.internal.pageSize.width, 20, 'F');
+  // Add subtle pattern
+  doc.setFillColor(255, 230, 100);
+  for(let i = 0; i < 4; i++) {
+    doc.rect(0, 195 + (i*5), doc.internal.pageSize.width, 2, 'F');
+  }
+  
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(18);
+  doc.setTextColor(51, 51, 51);
+  doc.text("Building Steps", 20, 208);
+  
+  let currentY = 225;
+  
+  set.bricks.forEach((brick, index) => {
+    if (currentY > 270) {
+      doc.addPage();
+      // Add header to new page with same styling
+      doc.setFillColor(255, 215, 0);
+      doc.rect(0, 0, doc.internal.pageSize.width, 25, 'F');
+      // Add subtle pattern
+      doc.setFillColor(255, 230, 100);
+      for(let i = 0; i < 5; i++) {
+        doc.rect(0, i*5, doc.internal.pageSize.width, 2, 'F');
+      }
+      
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(16);
+      doc.setTextColor(51, 51, 51);
+      doc.text(`${set.name} - Continued`, 20, 15);
+      currentY = 40;
+      
+      // Add corner decorations to new page
+      drawCornerDecoration(190, 10, Math.PI * 1.75);
+      drawCornerDecoration(190, 287, Math.PI * 1.25);
+      drawCornerDecoration(20, 287, Math.PI * 0.75);
+      drawCornerDecoration(20, 10, Math.PI * 0.25);
+    }
+    
+    // Enhanced step number styling
+    doc.setFillColor(255, 215, 0);
+    doc.roundedRect(25, currentY - 10, 20, 20, 3, 3, 'F');
+    doc.setTextColor(51, 51, 51);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(14);
+    doc.text((index + 1).toString(), 31, currentY + 2);
+    
+    // Step description with enhanced styling
+    doc.setFillColor(255, 250, 240);
+    doc.roundedRect(50, currentY - 8, 130, 16, 3, 3, 'F');
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
+    doc.text(`Place a ${brick.color} brick at position (${Math.round(brick.x)}, ${Math.round(brick.y)})`, 55, currentY);
+    
+    // Add step preview with enhanced styling
+    const stepCanvas = document.createElement('canvas');
+    stepCanvas.width = 50;
+    stepCanvas.height = 50;
+    const ctx = stepCanvas.getContext('2d');
+    
+    // Enhanced shadow effect
+    ctx.shadowColor = 'rgba(0,0,0,0.3)';
+    ctx.shadowBlur = 6;
+    ctx.shadowOffsetX = 3;
+    ctx.shadowOffsetY = 3;
+    
+    ctx.fillStyle = brick.color;
+    ctx.fillRect(10, 10, 30, 15);
+    
+    // Enhanced brick studs
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
+    ctx.fillStyle = 'rgba(255,255,255,0.4)';
+    ctx.beginPath();
+    [15, 25, 35].forEach(x => {
+      ctx.arc(x, 17, 2, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    
+    const stepImage = stepCanvas.toDataURL();
+    doc.addImage(stepImage, 'PNG', 150, currentY - 15, 30, 30);
+    
+    currentY += 30;
+  });
+  
+  // Enhanced footer with page numbers
+  const pageCount = doc.internal.getNumberOfPages();
+  for(let i = 1; i <= pageCount; i++) {
+    doc.setPage(i);
+    doc.setFillColor(255, 215, 0);
+    doc.rect(0, doc.internal.pageSize.height - 20, doc.internal.pageSize.width, 20, 'F');
+    doc.setFont("helvetica", "italic");
+    doc.setFontSize(10);
+    doc.setTextColor(51, 51, 51);
+    doc.text(`Page ${i} of ${pageCount}`, doc.internal.pageSize.width - 30, doc.internal.pageSize.height - 10);
+  }
+  
+  return doc;
+}
+
+async function downloadInstructions(setName) {
+  const set = sets.find(s => s.name === setName);
+  if (set) {
+    try {
+      const pdf = await generateInstructions(set);
+      pdf.save(`${set.name}_instructions.pdf`);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    }
+  }
+}
+
+let isDragging = false;
+let currentBrick = null;
+let offsetX = 0;
+let offsetY = 0;
+
+function createSetCard(set) {
+  const card = document.createElement('div');
+  card.className = 'set-card';
+  card.innerHTML = `
+    <h3>${set.name}</h3>
+    <p>Pieces: ${set.pieces}</p>
+    <p>Created by: ${set.creator}</p>
+    <div class="likes-container">
+      <button class="like-button" onclick="handleLike('${set.name}')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
+        </svg>
+        <span class="like-count">${set.likes}</span>
+      </button>
+      <button class="dislike-button" onclick="handleDislike('${set.name}')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2z"/>
+        </svg>
+        <span class="dislike-count">${set.dislikes}</span>
+      </button>
+    </div>
+    <button class="build-button" onclick="buildSet('${set.name}')">Build This Set</button>
+    <button class="build-button" onclick="downloadInstructions('${set.name}')">Download Instructions</button>
+    <div class="comments-section">
+      <h4>Comments</h4>
+      <div class="comment-form">
+        <input type="text" class="comment-input" placeholder="Add a comment..." id="comment-${set.name}">
+        <button class="build-button" onclick="addComment('${set.name}')">Post</button>
+      </div>
+      <div class="comments-container" id="comments-${set.name}">
+        ${set.comments.map(comment => `
+          <div class="comment">
+            <div class="comment-author">${comment.author}
+              <span class="comment-date">${comment.date}</span>
+            </div>
+            <div class="comment-text">${comment.text}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  return card;
+}
+
+function handleLike(setName) {
+  const set = sets.find(s => s.name === setName);
+  if (set) {
+    set.likes++;
+    populateSets();
+  }
+}
+
+function handleDislike(setName) {
+  const set = sets.find(s => s.name === setName);
+  if (set) {
+    set.dislikes++;
+    populateSets();
+  }
+}
+
+function addComment(setName) {
+  const set = sets.find(s => s.name === setName);
+  const input = document.getElementById(`comment-${setName}`);
+  if (set && input.value.trim()) {
+    set.comments.push({
+      author: 'User',
+      text: input.value.trim(),
+      date: new Date().toLocaleDateString()
+    });
+    input.value = '';
+    populateSets();
+  }
+}
+
+function createBandit() {
+  const bandit = document.createElement('div');
+  bandit.className = 'bandit';
+  bandit.innerHTML = `
+    <svg width="50" height="50" viewBox="0 0 50 50">
+      <circle cx="25" cy="20" r="15" fill="black"/>
+      <rect x="10" y="35" width="30" height="5" fill="black"/>
+      <circle cx="18" cy="17" r="3" fill="white"/>
+      <circle cx="32" cy="17" r="3" fill="white"/>
+      <rect x="20" y="25" width="10" height="2" fill="white"/>
+    </svg>
+  `;
+  return bandit;
+}
+
+function createDraggableBrick(x, y, color) {
+  const brick = document.createElement('div');
+  brick.className = 'brick';
+  brick.style.backgroundColor = color || document.getElementById('brickColor').value;
+  brick.style.left = x + 'px';
+  brick.style.top = y + 'px';
+  
+  brick.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    currentBrick = brick;
+    offsetX = e.clientX - brick.offsetLeft;
+    offsetY = e.clientY - brick.offsetTop;
+    brick.style.zIndex = '1000';
+  });
+  
+  return brick;
+}
+
+function startBuilding() {
+  const buildArea = document.getElementById('buildArea');
+  const brickContainer = document.getElementById('brickContainer');
+  brickContainer.innerHTML = '';
+  
+  buildArea.addEventListener('click', (e) => {
+    if (e.target === buildArea || e.target === brickContainer) {
+      const rect = buildArea.getBoundingClientRect();
+      const x = e.clientX - rect.left - 30;
+      const y = e.clientY - rect.top - 15;
+      const brick = createDraggableBrick(x, y);
+      brickContainer.appendChild(brick);
+    }
+  });
+
+  if(Math.random() < 0.3) {
+    const bandit = createBandit();
+    buildArea.appendChild(bandit);
+    bandit.style.left = Math.random() * (buildArea.offsetWidth - 50) + 'px';
+    bandit.style.top = Math.random() * (buildArea.offsetHeight - 50) + 'px';
+    bandit.style.opacity = 1;
+    
+    bandit.style.animation = 'steal 3s forwards';
+    setTimeout(() => {
+      bandit.remove();
+    }, 3000);
+  }
+}
+
+function buildSet(setName) {
+  const set = sets.find(s => s.name === setName);
+  if (set) {
+    startBuilding();
+    const brickContainer = document.getElementById('brickContainer');
+    set.bricks.forEach(brick => {
+      const brickElement = createDraggableBrick(brick.x, brick.y, brick.color);
+      brickContainer.appendChild(brickElement);
+    });
+  }
+}
+
+function saveSet() {
+  const name = prompt('Name your set:');
+  if (name) {
+    const bricks = Array.from(document.getElementsByClassName('brick')).map(brick => ({
+      x: brick.offsetLeft,
+      y: brick.offsetTop,
+      color: brick.style.backgroundColor
+    }));
+    
+    sets.push({
+      name: name,
+      pieces: bricks.length,
+      creator: 'You',
+      bricks: bricks,
+      likes: 0,
+      dislikes: 0,
+      comments: []
+    });
+    
+    populateSets();
+  }
+}
+
+document.addEventListener('mousemove', (e) => {
+  if (isDragging && currentBrick) {
+    const buildArea = document.getElementById('buildArea');
+    const rect = buildArea.getBoundingClientRect();
+    const x = e.clientX - rect.left - offsetX;
+    const y = e.clientY - rect.top - offsetY;
+    currentBrick.style.left = x + 'px';
+    currentBrick.style.top = y + 'px';
+  }
+});
+
+document.addEventListener('mouseup', () => {
+  if (currentBrick) {
+    currentBrick.style.zIndex = '';
+  }
+  isDragging = false;
+  currentBrick = null;
+});
+
+function populateSets() {
+  const grid = document.getElementById('setsGrid');
+  grid.innerHTML = '';
+  sets.forEach(set => {
+    grid.appendChild(createSetCard(set));
+  });
+}
+
+// Initialize the page
+populateSets();
+startBuilding();
+</script></body></html>
